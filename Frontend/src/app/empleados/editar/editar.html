@@ -1,0 +1,128 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+      <!-- Header -->
+      <div class="mb-4">
+        <h1 class="text-white fw-light mb-1">
+          <i class="bi bi-pencil-square text-primary me-3"></i>Editar Empleado
+        </h1>
+        <p class="text-muted mb-0">Actualiza la información del empleado</p>
+      </div>
+
+      <!-- Loading State -->
+      @if (cargando) {
+        <div class="card bg-dark border-secondary shadow-lg">
+          <div class="card-body p-5 text-center">
+            <div class="spinner-border text-primary mb-3" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="text-muted mb-2">Cargando datos del empleado...</p>
+            <p class="text-muted small">ID: {{ empleadoId }}</p>
+          </div>
+        </div>
+      } @else if (error) {
+        <!-- Error State -->
+        <div class="card bg-dark border-danger shadow-lg">
+          <div class="card-body p-5 text-center">
+            <i class="bi bi-exclamation-triangle-fill text-danger fs-1 mb-3 d-block"></i>
+            <p class="text-danger mb-3">{{ error }}</p>
+            <a [routerLink]="['/empleados']" class="btn btn-outline-secondary rounded-pill px-4">
+              <i class="bi bi-arrow-left me-2"></i>Volver a la lista
+            </a>
+          </div>
+        </div>
+      } @else {
+        <!-- Card del formulario -->
+        <div class="card bg-dark border-secondary shadow-lg">
+          <div class="card-body p-4">
+            <form (ngSubmit)="onSubmit()" #f="ngForm">
+              <!-- Nombre -->
+              <div class="mb-4">
+                <label class="form-label text-white fw-medium mb-2">
+                  <i class="bi bi-person me-2 text-primary"></i>Nombre Completo
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  class="form-control form-control-lg bg-dark text-white border-secondary"
+                  required
+                  [(ngModel)]="empleado.name"
+                  minlength="2"
+                  placeholder="Ej. Juan Pérez García"
+                />
+                <div class="form-text text-muted small mt-2">
+                  <i class="bi bi-info-circle me-1"></i>Mínimo 2 caracteres
+                </div>
+              </div>
+
+              <!-- Departamento -->
+              <div class="mb-4">
+                <label class="form-label text-white fw-medium mb-2">
+                  <i class="bi bi-building me-2 text-primary"></i>Departamento
+                </label>
+                <input
+                  type="text"
+                  name="department"
+                  class="form-control form-control-lg bg-dark text-white border-secondary"
+                  required
+                  [(ngModel)]="empleado.department"
+                  minlength="2"
+                  placeholder="Ej. Desarrollo, Ventas, RH"
+                />
+              </div>
+
+              <!-- Salario -->
+              <div class="mb-4">
+                <label class="form-label text-white fw-medium mb-2">
+                  <i class="bi bi-cash-coin me-2 text-primary"></i>Salario Mensual
+                </label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text bg-dark text-success border-secondary">$</span>
+                  <input
+                    type="number"
+                    name="salary"
+                    class="form-control bg-dark text-white border-secondary"
+                    required
+                    [(ngModel)]="empleado.salary"
+                    min="0"
+                    placeholder="0.00"
+                    step="0.01"
+                  />
+                </div>
+              </div>
+
+              <!-- Mensaje de error -->
+              @if (error) {
+                <div class="alert alert-danger bg-danger bg-opacity-10 border-danger text-danger rounded-3 mb-4">
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error }}
+                </div>
+              }
+
+              <!-- Botones -->
+              <div class="d-flex gap-3 mt-4">
+                <button
+                  class="btn btn-primary btn-lg rounded-pill flex-grow-1"
+                  type="submit"
+                  [disabled]="f.invalid || guardando"
+                >
+                  @if (guardando) {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Actualizando...
+                  } @else {
+                    <i class="bi bi-check-circle me-2"></i>Guardar Cambios
+                  }
+                </button>
+                <a
+                  [routerLink]="['/empleados']"
+                  class="btn btn-outline-secondary btn-lg rounded-pill px-4"
+                >
+                  <i class="bi bi-x-circle me-2"></i>Cancelar
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
